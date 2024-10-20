@@ -2,51 +2,97 @@ package application;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.DatePicker;
+import javafx.scene.text.Font;
 import java.time.LocalDate;
-
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class Main extends Application {
-	public void start(Stage primaryStage) {
+    @Override
+    public void start(Stage primaryStage) {
+        try {
+            Font.loadFont(new FileInputStream("E:\\dev-demo\\wsjavafx\\javafxdemo\\RobotoMono.ttf"), 14);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        Image logoImage = null;
+        try {
+            logoImage = new Image(new FileInputStream("E:\\dev-demo\\wsjavafx\\javafxdemo\\MoneyBag.png"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        
+        ImageView logoImageView = new ImageView(logoImage);
+        logoImageView.setFitHeight(80); 
+        logoImageView.setFitWidth(80);   
+        logoImageView.setPreserveRatio(true); 
+
+
         Label titleLabel = new Label("MyBudgeter");
+        titleLabel.setFont(new Font("Roboto Mono", 24)); 
+        titleLabel.setTextFill(javafx.scene.paint.Color.web("#2E8B57")); 
+
         Button createAccountButton = new Button("Create New Account");
-        
-        VBox homeLayout = new VBox(10);
-        homeLayout.setPadding(new Insets(20));
-        homeLayout.getChildren().addAll(titleLabel, createAccountButton);
-        
-        Scene homeScene = new Scene(homeLayout, 300, 200);
+        createAccountButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10px 20px;");
+
+        VBox homeLayout = new VBox(20); 
+        homeLayout.setPadding(new Insets(30));
+        homeLayout.setAlignment(Pos.CENTER);
+        homeLayout.setStyle("-fx-background-color: #F0F8FF;"); 
+
+
+        homeLayout.getChildren().addAll(logoImageView, titleLabel, createAccountButton);
+
+        Scene homeScene = new Scene(homeLayout, 400, 300);
         primaryStage.setTitle("MyBudgeter");
         primaryStage.setScene(homeScene);
         primaryStage.setResizable(true);
         primaryStage.show();
 
+
         Label accountNameLabel = new Label("Account Name:");
+        accountNameLabel.setFont(new Font("Roboto Mono", 14)); 
+
         TextField accountNameField = new TextField();
-        
+        accountNameField.setPromptText("Enter account name");
+        accountNameField.setStyle("-fx-background-color: #E0F7FA; -fx-border-color: #00897B; -fx-border-radius: 5; -fx-padding: 10;");
+
         Label openingDateLabel = new Label("Opening Date:");
+        openingDateLabel.setFont(new Font("Roboto Mono", 14)); 
+
         DatePicker openingDatePicker = new DatePicker(LocalDate.now());
-        
+
         Label openingBalanceLabel = new Label("Opening Balance:");
+        openingBalanceLabel.setFont(new Font("Roboto Mono", 14)); 
+
         TextField openingBalanceField = new TextField();
-        
+        openingBalanceField.setPromptText("Enter opening balance");
+        openingBalanceField.setStyle("-fx-background-color: #E0F7FA; -fx-border-color: #00897B; -fx-border-radius: 5; -fx-padding: 10;");
+
         Button submitButton = new Button("Submit");
-        
-        VBox newAccountLayout = new VBox(10);
-        newAccountLayout.setPadding(new Insets(20));
+        submitButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10px 20px;");
+
+        VBox newAccountLayout = new VBox(15);
+        newAccountLayout.setPadding(new Insets(30));
+        newAccountLayout.setAlignment(Pos.CENTER_LEFT);
+        newAccountLayout.setStyle("-fx-background-color: #F9F9F9;");
         newAccountLayout.getChildren().addAll(
                 accountNameLabel, accountNameField,
                 openingDateLabel, openingDatePicker,
                 openingBalanceLabel, openingBalanceField,
                 submitButton
         );
-        
-        Scene newAccountScene = new Scene(newAccountLayout, 400, 300);
+
+        Scene newAccountScene = new Scene(newAccountLayout, 450, 350);
 
         createAccountButton.setOnAction(e -> primaryStage.setScene(newAccountScene));
 
@@ -66,6 +112,7 @@ public class Main extends Application {
             }
         });
     }
+
 
     private void showAlert(AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
